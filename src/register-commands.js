@@ -7,8 +7,8 @@ const commands = [
     description: "test connection",
   },
   {
-    name: "talent",
-    description: "get talent data",
+    name: "vtuber",
+    description: "get vtuber data",
     options: [
       {
         name: "name",
