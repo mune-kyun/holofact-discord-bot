@@ -7,6 +7,7 @@ import {
 } from "./handler/generation/chatInputCommand";
 import { handleVtuber } from "./handler/vtuber/chatInputCommand";
 import { handleGenerationList as handleSelectGenerationList } from "./handler/generation/stringSelectMenu";
+import { handleVtuberDetail } from "./handler/vtuber/button";
 
 const client = new Client({
   intents: [
@@ -47,6 +48,12 @@ client.on("interactionCreate", (interaction) => {
     if (commandName == "generation list") {
       const selectedValue = interaction.values[0];
       handleSelectGenerationList(interaction, selectedValue);
+    }
+  } else if (interaction.isButton()) {
+    const { customId } = interaction;
+
+    if (customId.includes("Detail")) {
+      handleVtuberDetail(interaction, customId.replace(" Detail", ""));
     }
   }
 });
