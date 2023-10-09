@@ -28,6 +28,55 @@ const getVtuberByName = (name) => {
   });
 };
 
+const getGeneration = () => {
+  const query = gql`
+    {
+      generations {
+        name
+      }
+    }
+  `;
+
+  return new Promise((resolve, reject) => {
+    client
+      .request(query)
+      .then((data) => {
+        resolve(data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
+const getGenerationByIdName = (idName) => {
+  const query = gql`
+    query GetGeneration($idName: String!) {
+      generation(idName: $idName) {
+        idName
+        name
+      }
+    }
+  `;
+
+  const variables = {
+    idName,
+  };
+
+  return new Promise((resolve, reject) => {
+    client
+      .request(query, variables)
+      .then((data) => {
+        resolve(data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
 module.exports = {
   getVtuberByName,
+  getGeneration,
+  getGenerationByIdName,
 };

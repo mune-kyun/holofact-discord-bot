@@ -1,7 +1,7 @@
 require("dotenv").config();
 const { Client, IntentsBitField } = require("discord.js");
 
-const { getVtuberByName } = require("./api");
+const { getVtuberByName, getGeneration } = require("./api");
 
 const client = new Client({
   intents: [
@@ -19,21 +19,53 @@ client.on("ready", (c) => {
 client.on("interactionCreate", (interaction) => {
   if (!interaction.isChatInputCommand()) return;
 
-  if (interaction.commandName === "test") {
+  const { commandName, options } = interaction;
+
+  if (commandName === "test") {
     interaction.reply("tested");
   }
 
-  if (interaction.commandName === "vtuber") {
-    const name = interaction.options.get("name").value;
+  if (commandName === "vtuber") {
+    const name = options.get("name").value;
 
     getVtuberByName(name)
       .then(({ vtuber }) => {
-        interaction.reply(`${vtuber.name} is kawaii`);
+        interaction.reply(`**${vtuber.name}** is kawaii \ndesu`);
       })
       .catch((e) => {
         interaction.reply(`error occured`);
         console.log(e);
       });
+  }
+
+  if (commandName === "generation") {
+    if (options.getSubcommand() === "list") {
+      getGeneration()
+        .then(({ generations }) => {
+          let ret = ["*List of Generation* \n\n"];
+          generations.map(({ name, idx }) =>
+            idx + 1 == generations.length
+              ? ret.push(`**${name}**`)
+              : ret.push(`**${name}**\n`)
+          );
+          ret = ret.join("");
+
+          interaction.reply(`${ret}`);
+        })
+        .catch((e) => {
+          interaction.reply(`error occured`);
+          console.log(e);
+        });
+    } else if (options.getSubcommand() === "members") {
+      getGeneration()
+        .then(({ vtuber }) => {
+          interaction.reply(`**${vtuber.name}** is kawaii \ndesu`);
+        })
+        .catch((e) => {
+          interaction.reply(`error occured`);
+          console.log(e);
+        });
+    }
   }
 });
 
