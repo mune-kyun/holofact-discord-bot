@@ -32,6 +32,7 @@ const getGeneration = () => {
   const query = gql`
     {
       generations {
+        idName
         name
       }
     }
