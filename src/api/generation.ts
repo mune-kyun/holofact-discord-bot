@@ -30,6 +30,9 @@ const getGenerationByIdName = (idName) => {
       generation(idName: $idName) {
         idName
         name
+        members {
+          name
+        }
       }
     }
   `;
