@@ -1,12 +1,12 @@
 require("dotenv").config();
-const {
+import {
   Client,
   IntentsBitField,
   ActionRowBuilder,
   StringSelectMenuBuilder,
-} = require("discord.js");
+} from "discord.js";
 
-const { getVtuberByName, getGeneration } = require("./api");
+import { getVtuberByName, getGeneration } from "./api";
 
 const client = new Client({
   intents: [
@@ -33,7 +33,7 @@ client.on("interactionCreate", (interaction) => {
       const name = options.get("name").value;
 
       getVtuberByName(name)
-        .then(({ vtuber }) => {
+        .then(({ vtuber }: any) => {
           interaction.reply(`**${vtuber.name}** is kawaii \ndesu`);
         })
         .catch((e) => {
@@ -45,8 +45,8 @@ client.on("interactionCreate", (interaction) => {
     if (commandName === "generation") {
       if (options.getSubcommand() === "list") {
         getGeneration()
-          .then(({ generations }) => {
-            let retList = ["*List of Generation* \n\n"];
+          .then(({ generations }: any) => {
+            let retList: any = ["*List of Generation* \n\n"];
             generations.map(({ name, idx }) =>
               idx + 1 == generations.length
                 ? retList.push(`**${name}**`)
@@ -68,7 +68,7 @@ client.on("interactionCreate", (interaction) => {
 
             interaction.reply({
               content: `${retList}\n${menuMessage}`,
-              components: [row],
+              components: [row] as any,
             });
           })
           .catch((e) => {
@@ -77,7 +77,7 @@ client.on("interactionCreate", (interaction) => {
           });
       } else if (options.getSubcommand() === "members") {
         getGeneration()
-          .then(({ vtuber }) => {
+          .then(({ vtuber }: any) => {
             interaction.reply(`**${vtuber.name}** is kawaii \ndesu`);
           })
           .catch((e) => {
