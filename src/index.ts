@@ -1,12 +1,12 @@
 require("dotenv").config();
-import {
-  Client,
-  IntentsBitField,
-  ActionRowBuilder,
-  StringSelectMenuBuilder,
-} from "discord.js";
+import { Client, IntentsBitField } from "discord.js";
 
-import { getVtuberByName, getGeneration } from "./api";
+import {
+  handleGenerationList,
+  handleGenerationMembers,
+} from "./handler/generation/chatInputCommand";
+import { handleVtuber } from "./handler/vtuber/chatInputCommand";
+import { handleYou } from "./handler/generation/stringSelectMenu";
 
 const client = new Client({
   intents: [
@@ -31,65 +31,19 @@ client.on("interactionCreate", (interaction) => {
 
     if (commandName === "vtuber") {
       const name = options.get("name").value;
-
-      getVtuberByName(name)
-        .then(({ vtuber }: any) => {
-          interaction.reply(`**${vtuber.name}** is kawaii \ndesu`);
-        })
-        .catch((e) => {
-          interaction.reply(`error occured`);
-          console.log(e);
-        });
+      handleVtuber(interaction, name);
     }
 
     if (commandName === "generation") {
       if (options.getSubcommand() === "list") {
-        getGeneration()
-          .then(({ generations }: any) => {
-            let retList: any = ["*List of Generation* \n\n"];
-            generations.map(({ name, idx }) =>
-              idx + 1 == generations.length
-                ? retList.push(`**${name}**`)
-                : retList.push(`**${name}**\n`)
-            );
-            retList = retList.join("");
-
-            const options = generations.map(({ idName, name }) => ({
-              label: name,
-              value: idName,
-            }));
-            const menuMessage = "Member list for each generations";
-            const row = new ActionRowBuilder().addComponents(
-              new StringSelectMenuBuilder()
-                .setCustomId("select")
-                .setPlaceholder("Nothing selected")
-                .addOptions(options)
-            );
-
-            interaction.reply({
-              content: `${retList}\n${menuMessage}`,
-              components: [row] as any,
-            });
-          })
-          .catch((e) => {
-            interaction.reply(`error occured`);
-            console.log(e);
-          });
+        handleGenerationList(interaction);
       } else if (options.getSubcommand() === "members") {
-        getGeneration()
-          .then(({ vtuber }: any) => {
-            interaction.reply(`**${vtuber.name}** is kawaii \ndesu`);
-          })
-          .catch((e) => {
-            interaction.reply(`error occured`);
-            console.log(e);
-          });
+        handleGenerationMembers(interaction);
       }
     }
   } else if (interaction.isStringSelectMenu()) {
     const selectedValue = interaction.values[0];
-
-    interaction.reply(selectedValue);
+    handleYou(interaction, selectedValue);
   }
 });
 
