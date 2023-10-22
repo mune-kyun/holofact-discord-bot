@@ -2,7 +2,10 @@ import { gql } from "graphql-request";
 
 import client from "./client";
 
-const getVtuberByName = (name, fields = "name birthday greeting height") => {
+const getVtuberByName = (
+  name,
+  fields = "name imgUrl birthday greeting height"
+) => {
   const query = gql`
     query GetVtuber($name: String!) {
       vtuber(name: $name) {
