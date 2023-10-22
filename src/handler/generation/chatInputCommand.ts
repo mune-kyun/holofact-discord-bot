@@ -1,5 +1,6 @@
 import { ActionRowBuilder, StringSelectMenuBuilder } from "discord.js";
 import { getGeneration } from "../../api";
+import { mainHandleGenerationList } from "../main";
 
 const handleGenerationList = (interaction) => {
   getGeneration()
@@ -35,15 +36,8 @@ const handleGenerationList = (interaction) => {
     });
 };
 
-const handleGenerationMembers = (interaction) => {
-  getGeneration()
-    .then(({ vtuber }: any) => {
-      interaction.reply(`**${vtuber.name}** is kawaii \ndesu`);
-    })
-    .catch((e) => {
-      interaction.reply(`error occured`);
-      console.log(e);
-    });
+const handleGenerationMembers = (interaction, selectedValue) => {
+  mainHandleGenerationList(interaction, selectedValue);
 };
 
 export { handleGenerationList, handleGenerationMembers };

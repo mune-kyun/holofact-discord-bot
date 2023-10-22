@@ -39,7 +39,8 @@ client.on("interactionCreate", (interaction) => {
       if (options.getSubcommand() === "list") {
         handleGenerationList(interaction);
       } else if (options.getSubcommand() === "members") {
-        handleGenerationMembers(interaction);
+        const gen = options.get("gen_name").value;
+        handleGenerationMembers(interaction, gen);
       }
     }
   } else if (interaction.isStringSelectMenu()) {
