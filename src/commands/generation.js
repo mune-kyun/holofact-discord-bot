@@ -21,8 +21,16 @@ module.exports = new SlashCommandBuilder()
               value: "0",
             },
             {
+              name: "Gen 1",
+              value: "1",
+            },
+            {
               name: "Gen 2",
               value: "2",
+            },
+            {
+              name: "GAMERS",
+              value: "GAMERS",
             }
           )
       )
