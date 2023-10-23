@@ -8,6 +8,7 @@ import {
 import { handleVtuber } from "./handler/vtuber/chatInputCommand";
 import { handleGenerationList as handleSelectGenerationList } from "./handler/generation/stringSelectMenu";
 import { handleVtuberDetail } from "./handler/vtuber/button";
+import { handleFact } from "./handler/fact/chatInputCommand";
 
 const client = new Client({
   intents: [
@@ -42,6 +43,11 @@ client.on("interactionCreate", (interaction) => {
         const gen = options.get("gen_name").value;
         handleGenerationMembers(interaction, gen);
       }
+    }
+
+    if (commandName === "fact") {
+      const name = options.get("name") ? options.get("name").value : null;
+      handleFact(interaction, name);
     }
   } else if (interaction.isStringSelectMenu()) {
     const { commandName } = interaction.message.interaction;
