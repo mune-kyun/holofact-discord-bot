@@ -4,7 +4,17 @@ import client from "./client";
 
 const getVtuberByName = (
   name,
-  fields = "name imgUrl birthday greeting height"
+  fields = `
+    name
+    funFacts
+    birthday
+    greeting
+    height
+    generation {
+      name
+    }
+    nickname
+    imgUrl`
 ) => {
   const query = gql`
     query GetVtuber($name: String!) {

@@ -29,14 +29,25 @@ const mainHandleGenerationList = (interaction, selectedValue) => {
 const mainHandleVtuberDetail = (interaction, name) => {
   getVtuberByName(name)
     .then(({ vtuber }: any) => {
-      const { name, imgUrl, birthday, greeting, height } = vtuber;
-
+      const {
+        name,
+        nickname,
+        imgUrl,
+        birthday,
+        greeting,
+        height,
+        funFacts,
+        generation,
+      } = vtuber;
       interaction.reply({
         content: `
         \nName: **${name}** 
+        \nNicknames: **${nickname.join(", ")}**
+        \nGeneration: **${generation.map(({ name }) => name).join(", ")}**
         \nBirthday: **${birthday}** 
         \nGreeting: **${greeting}** 
         \nHeight: **${height} cm**
+        \nFun Fact: **${funFacts[0]}**
         \n${imgUrl}
         `,
       });
