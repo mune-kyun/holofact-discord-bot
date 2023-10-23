@@ -30,4 +30,29 @@ const getVtuberByName = (
   });
 };
 
-export { getVtuberByName };
+const getFact = (name = null, fields = "name funFacts") => {
+  const query = gql`
+    query Fact($name: String) {
+      fact(name: $name) {
+        ${fields}
+      }
+    }
+  `;
+
+  const variables = {
+    name,
+  };
+
+  return new Promise((resolve, reject) => {
+    client
+      .request(query, variables)
+      .then((data) => {
+        resolve(data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
+export { getVtuberByName, getFact };
