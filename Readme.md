@@ -23,6 +23,7 @@ A discord bot to gives you basic information and fun fact of certain Hololive me
 Clone the backend from https://github.com/mune-kyun/holofact, then run
 
 `npm install`
+`npm run seed`
 `npm run dev`
 
 to run it locally
